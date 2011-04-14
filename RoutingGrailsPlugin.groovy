@@ -5,6 +5,7 @@ import org.apache.log4j.Logger
 import org.apache.camel.spring.*
 import org.apache.camel.model.*
 import org.apache.camel.language.groovy.CamelGroovyMethods
+import org.codehaus.groovy.grails.commons.ConfigurationHolder
 import org.springframework.beans.factory.config.MethodInvokingFactoryBean
 
 import org.grails.plugins.routing.*
@@ -45,6 +46,10 @@ added with the 'grails create-route route-name' command.
     	init()
 
         def routeClasses = application.routeClasses
+        def config = ConfigurationHolder.config.grails.camel
+        def camelContextId = config?.camelContextId ?: 'camelContext'
+
+        println "DEBUG: camelContextId = ${camelContextId}"
 
         log.debug "Configuring Routes"
         routeClasses.each { routeClass ->
@@ -54,7 +59,7 @@ added with the 'grails create-route route-name' command.
 
         xmlns camel:'http://camel.apache.org/schema/spring'
 
-        camel.camelContext(id: 'camelContext') {
+        camel.camelContext(id: camelContextId) {
             routeClasses.each { routeClass ->
                 camel.routeBuilder(ref: "${routeClass.fullName}")
             }
