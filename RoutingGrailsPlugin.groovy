@@ -49,8 +49,6 @@ added with the 'grails create-route route-name' command.
         def config = ConfigurationHolder.config.grails.camel
         def camelContextId = config?.camelContextId ?: 'camelContext'
 
-        println "DEBUG: camelContextId = ${camelContextId}"
-
         log.debug "Configuring Routes"
         routeClasses.each { routeClass ->
             configureRouteBeans.delegate = delegate
