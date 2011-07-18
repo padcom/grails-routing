@@ -137,6 +137,9 @@ added with the 'grails create-route route-name' command.
             artifact.metaClass.sendMessage = { endpoint,message ->
                 template.sendBody(endpoint,message)
             }
+            artifact.metaClass.sendMessageAndHeaders = { endpoint, message, headers ->
+                template.sendBodyAndHeaders(endpoint,message,headers)
+            }
             artifact.metaClass.requestMessage = { endpoint,message ->
                 template.requestBody(endpoint,message)
             }
