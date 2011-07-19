@@ -86,6 +86,20 @@ added with the 'grails create-route route-name' command.
             def grailsClass = application."${artifactType}Classes".find { it.fullName == artifactName }
             this.addMethods([grailsClass],event.ctx)
         }
+
+    	log.debug "Reloading bean endpoints of class ${event.source.name}..."
+    	event.ctx.beanDefinitionNames.each { bean ->
+    		if (event.ctx.getType(bean)?.simpleName == event.source.name) {
+	    		// endpoints with bean are to be restarted
+	    		event.ctx.camelContext.endpoints.each { endpoint ->
+					if (endpoint instanceof org.apache.camel.component.bean.BeanEndpoint && endpoint.beanName == bean) {
+						endpoint.beanHolder = null
+						endpoint.processor = null
+						endpoint.cache = false
+					}
+	    		}
+    		}
+    	}
     }
 
     def onConfigChange = { event ->
