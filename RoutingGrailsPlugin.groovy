@@ -14,8 +14,8 @@ class RoutingGrailsPlugin {
 
     static final log = Logger.getLogger('org.grails.plugins.routing.RoutingGrailsPlugin')
     
-    def version = "1.1.3"
-    def grailsVersion = "1.3.6 > *"
+    def version = "1.1.4-SNAPSHOT"
+    def grailsVersion = "2.0.0.RC2 > *"
     def dependsOn = [:]
     def pluginExcludes = []
     def loadAfter = [ 'controllers', 'services' ]
