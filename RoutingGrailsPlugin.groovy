@@ -14,7 +14,7 @@ class RoutingGrailsPlugin {
 
     static final log = Logger.getLogger('org.grails.plugins.routing.RoutingGrailsPlugin')
     
-    def version = "1.1.4"
+    def version = "1.1.5-SNAPSHOT"
     def grailsVersion = "2.0.0 > *"
     def dependsOn = [:]
     def pluginExcludes = []
