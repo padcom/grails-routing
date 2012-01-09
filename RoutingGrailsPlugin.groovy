@@ -157,6 +157,9 @@ added with the 'grails create-route route-name' command.
             artifact.metaClass.requestMessage = { endpoint,message ->
                 template.requestBody(endpoint,message)
             }
+            artifact.metaClass.requestMessageAndHeaders = { endpoint, message, headers ->
+                template.requestBodyAndHeaders(endpoint, message, headers)
+            }
         }
     }
 
