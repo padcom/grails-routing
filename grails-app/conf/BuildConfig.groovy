@@ -40,4 +40,8 @@ grails.project.dependency.resolution = {
         }
         runtime('org.apache.camel:camel-stream:2.9.0')
     }
+
+    plugins {
+        compile("org.grails.plugins:release:1.0.1") { export = false }
+    }
 }
