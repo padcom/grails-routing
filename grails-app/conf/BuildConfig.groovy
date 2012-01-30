@@ -32,7 +32,7 @@ grails.project.dependency.resolution = {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
 
         build('org.apache.camel:camel-core:2.9.0')
-        build('org.apache.camel:camel-spring:2.9.0') {
+        runtime('org.apache.camel:camel-spring:2.9.0') {
             excludes 'spring-aop', 'spring-beans', 'spring-core', 'spring-expression', 'spring-asm', 'spring-tx', 'spring-context'
         }
         runtime('org.apache.camel:camel-groovy:2.9.0') {
