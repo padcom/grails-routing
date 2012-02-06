@@ -12,9 +12,4 @@ public class DefaultGrailsRouteClass extends AbstractInjectableGrailsClass imple
     public DefaultGrailsRouteClass(Class clazz, String trailingName) {
         super(clazz, trailingName);
     }
-
-    @Override
-    public Closure getConfiguration() {
-        return getPropertyValue(CONFIGURE, Closure.class);
-    }
 }

@@ -4,21 +4,16 @@ import java.lang.reflect.Field;
 
 import org.codehaus.groovy.grails.commons.ArtefactHandlerAdapter;
 import org.springframework.util.ReflectionUtils;
+import org.apache.camel.builder.RouteBuilder;
 
 @SuppressWarnings("rawtypes")
-public class RouteArtefactHandler extends ArtefactHandlerAdapter {
-
-    public static final String TYPE = "Route";
-
+public class RouteArtefactHandler extends ArtefactHandlerAdapter implements GrailsRouteClassProperty {
     public RouteArtefactHandler() {
-        super(TYPE, GrailsRouteClass.class, DefaultGrailsRouteClass.class, TYPE);
+        super(ROUTE, GrailsRouteClass.class, DefaultGrailsRouteClass.class, ROUTE);
     }
 
     @Override
     public boolean isArtefactClass(Class clazz) {
-        if(clazz == null || !clazz.getName().endsWith(TYPE)) return false;
-
-        Field field = ReflectionUtils.findField(clazz, GrailsRouteClassProperty.CONFIGURE);
-        return field != null;
+        return clazz != null && RouteBuilder.class.isAssignableFrom(clazz);
     }
 }
