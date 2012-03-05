@@ -6,7 +6,7 @@ class @artifact.name@ extends RouteBuilder {
 	def grailsApplication
 
     @Override
-    void configure()
+    void configure() {
 		def config = grailsApplication?.config
 
         // example:
