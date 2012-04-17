@@ -1,15 +1,12 @@
 grails.project.work.dir = "target"
 
 grails.project.dependency.resolution = {
-    // inherit Grails' default dependencies
     inherits("global") {
-        // uncomment to disable ehcache
-        // excludes 'ehcache'
         excludes 'tomcat'
         excludes 'hibernate'
     }
 
-    log "warn" // log level of Ivy resolver, either 'error', 'warn', 'info', 'debug' or 'verbose'
+    log "warn"
 
     repositories {
         grailsPlugins()
