@@ -14,7 +14,7 @@ class RoutingGrailsPlugin {
 	def dependsOn        = [:]
 	def loadAfter        = [ 'controllers', 'services' ]
 	def artefacts        = [ new RouteArtefactHandler() ]
-	def author           = 'Maciej Hryniszak, Chris Navta'
+	def author           = 'Matthias Hryniszak, Chris Navta'
 	def authorEmail      = 'padcom@gmail.com, chris@ix-n.com'
 	def documentation    = 'http://grails.org/plugin/routing'
 	def title            = 'Routing capabilities using Apache Camel'
