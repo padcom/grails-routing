@@ -9,25 +9,25 @@ import org.grails.plugins.routing.RouteArtefactHandler
 import org.grails.plugins.routing.processor.ClosureProcessor
 
 class RoutingGrailsPlugin {
-    def version          = '1.2.2'
-    def grailsVersion    = '2.0.0 > *'
-    def dependsOn        = [:]
-    def loadAfter        = [ 'controllers', 'services' ]
-    def artefacts        = [ new RouteArtefactHandler() ]
-    def author           = 'Maciej Hryniszak, Chris Navta'
-    def authorEmail      = 'padcom@gmail.com, chris@ix-n.com'
-    def documentation    = 'http://grails.org/plugin/routing'
-    def title            = 'Routing capabilities using Apache Camel'
-    def description      = 'Provides message routing capabilities using Apache Camel'
+	def version          = '1.2.2'
+	def grailsVersion    = '2.0.0 > *'
+	def dependsOn        = [:]
+	def loadAfter        = [ 'controllers', 'services' ]
+	def artefacts        = [ new RouteArtefactHandler() ]
+	def author           = 'Maciej Hryniszak, Chris Navta'
+	def authorEmail      = 'padcom@gmail.com, chris@ix-n.com'
+	def documentation    = 'http://grails.org/plugin/routing'
+	def title            = 'Routing capabilities using Apache Camel'
+	def description      = 'Provides message routing capabilities using Apache Camel'
 
-    def doWithSpring = {
-        def config = application.config.grails.routing
-        def camelContextId = config?.camelContextId ?: 'camelContext'
-        def routeClasses = application.routeClasses
+	def doWithSpring = {
+		def config = application.config.grails.routing
+		def camelContextId = config?.camelContextId ?: 'camelContext'
+		def routeClasses = application.routeClasses
 
-    	initializeRouteBuilderHelpers()
+		initializeRouteBuilderHelpers()
 
-        routeClasses.each { routeClass ->
+		routeClasses.each { routeClass ->
 			def fullName = routeClass.fullName
 
 			"${fullName}Class"(MethodInvokingFactoryBean) {
@@ -40,42 +40,42 @@ class RoutingGrailsPlugin {
 				bean.factoryMethod = "newInstance"
 				bean.autowire = "byName"
 			}
-        }
+		}
 
-        xmlns camel:'http://camel.apache.org/schema/spring'
+		xmlns camel:'http://camel.apache.org/schema/spring'
 
-        camel.camelContext(id: camelContextId) {
+		camel.camelContext(id: camelContextId) {
 			def threadPoolProfileConfig = config?.defaultThreadPoolProfile
 
 			camel.threadPoolProfile(
-				id: "defaultThreadPoolProfile", 
+				id: "defaultThreadPoolProfile",
 				defaultProfile: "true",
-				poolSize: threadPoolProfileConfig?.poolSize ?: "10", 
+				poolSize: threadPoolProfileConfig?.poolSize ?: "10",
 				maxPoolSize: threadPoolProfileConfig?.maxPoolSize ?: "20",
 				maxQueueSize: threadPoolProfileConfig?.maxQueueSize ?: "1000",
 				rejectedPolicy: threadPoolProfileConfig?.rejectedPolicy ?: "CallerRuns")
 
-            routeClasses.each { routeClass ->
-                camel.routeBuilder(ref: "${routeClass.fullName}")
-            }
-            camel.template(id: 'producerTemplate')
-        }
-    }
+			routeClasses.each { routeClass ->
+				camel.routeBuilder(ref: "${routeClass.fullName}")
+			}
+			camel.template(id: 'producerTemplate')
+		}
+	}
 
-    def doWithDynamicMethods = { ctx ->
-        def template = ctx.getBean('producerTemplate')
+	def doWithDynamicMethods = { ctx ->
+		def template = ctx.getBean('producerTemplate')
 
-    	addDynamicMethods(application.controllerClasses, template);
-    	addDynamicMethods(application.serviceClasses, template);
+		addDynamicMethods(application.controllerClasses, template);
+		addDynamicMethods(application.serviceClasses, template);
 
-    	if (isQuartzPluginInstalled(application))
-            addDynamicMethods(application.taskClasses, template);
-    }
+		if (isQuartzPluginInstalled(application))
+			addDynamicMethods(application.taskClasses, template);
+	}
 
-    def watchedResources = [
-        "file:./grails-app/controllers/**/*Controller.groovy",
-        "file:./grails-app/services/**/*Service.groovy"
-    ]
+	def watchedResources = [
+		"file:./grails-app/controllers/**/*Controller.groovy",
+		"file:./grails-app/services/**/*Service.groovy"
+	]
 
 	def onChange = { event ->
 		def artifactName = "${event.source.name}"
@@ -87,57 +87,57 @@ class RoutingGrailsPlugin {
 		}
 	}
 
-    // ------------------------------------------------------------------------
-    // Private methods
-    // ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	// Private methods
+	// ------------------------------------------------------------------------
 
-    private initializeRouteBuilderHelpers() {
-        ProcessorDefinition.metaClass.filter = { filter ->
-            if (filter instanceof Closure) {
-                filter = CamelGroovyMethods.toExpression(filter)
-            }
-            delegate.filter(filter);
-        }
+	private initializeRouteBuilderHelpers() {
+		ProcessorDefinition.metaClass.filter = { filter ->
+			if (filter instanceof Closure) {
+				filter = CamelGroovyMethods.toExpression(filter)
+			}
+			delegate.filter(filter);
+		}
 
-        ChoiceDefinition.metaClass.when = { filter ->
-            if (filter instanceof Closure) {
-                filter = CamelGroovyMethods.toExpression(filter)
-            }
-            delegate.when(filter);
-        }
+		ChoiceDefinition.metaClass.when = { filter ->
+			if (filter instanceof Closure) {
+				filter = CamelGroovyMethods.toExpression(filter)
+			}
+			delegate.when(filter);
+		}
 
-        ProcessorDefinition.metaClass.process = { filter ->
-            if (filter instanceof Closure) {
-                filter = new ClosureProcessor(filter)
-            }
-            delegate.process(filter);
-        }
-    }
+		ProcessorDefinition.metaClass.process = { filter ->
+			if (filter instanceof Closure) {
+				filter = new ClosureProcessor(filter)
+			}
+			delegate.process(filter);
+		}
+	}
 
-    private addDynamicMethods(artifacts, template) {
-        artifacts?.each { artifact ->
-            artifact.metaClass.sendMessage = { endpoint,message ->
-                template.sendBody(endpoint,message)
-            }
-            artifact.metaClass.sendMessageAndHeaders = { endpoint, message, headers ->
-                template.sendBodyAndHeaders(endpoint,message,headers)
-            }
-            artifact.metaClass.requestMessage = { endpoint,message ->
-                template.requestBody(endpoint,message)
-            }
-            artifact.metaClass.requestMessageAndHeaders = { endpoint, message, headers ->
-                template.requestBodyAndHeaders(endpoint, message, headers)
-            }
-        }
-    }
+	private addDynamicMethods(artifacts, template) {
+		artifacts?.each { artifact ->
+			artifact.metaClass.sendMessage = { endpoint,message ->
+				template.sendBody(endpoint,message)
+			}
+			artifact.metaClass.sendMessageAndHeaders = { endpoint, message, headers ->
+				template.sendBodyAndHeaders(endpoint,message,headers)
+			}
+			artifact.metaClass.requestMessage = { endpoint,message ->
+				template.requestBody(endpoint,message)
+			}
+			artifact.metaClass.requestMessageAndHeaders = { endpoint, message, headers ->
+				template.requestBodyAndHeaders(endpoint, message, headers)
+			}
+		}
+	}
 
-    private isQuartzPluginInstalled(application) {
-    	// this is a nasty implementation... maybe there's something better?
-        try {
-          def tasks = application.taskClasses
-          return true
-        } catch (e) {
-          return false
-        }
-    }
+	private isQuartzPluginInstalled(application) {
+		// this is a nasty implementation... maybe there's something better?
+		try {
+			def tasks = application.taskClasses
+			return true
+		} catch (e) {
+			return false
+		}
+	}
 }
