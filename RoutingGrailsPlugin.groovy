@@ -45,6 +45,16 @@ class RoutingGrailsPlugin {
         xmlns camel:'http://camel.apache.org/schema/spring'
 
         camel.camelContext(id: camelContextId) {
+			def threadPoolProfileConfig = config?.defaultThreadPoolProfile
+
+			camel.threadPoolProfile(
+				id: "defaultThreadPoolProfile", 
+				defaultProfile: "true",
+				poolSize: threadPoolProfileConfig?.poolSize ?: "10", 
+				maxPoolSize: threadPoolProfileConfig?.maxPoolSize ?: "20",
+				maxQueueSize: threadPoolProfileConfig?.maxQueueSize ?: "1000",
+				rejectedPolicy: threadPoolProfileConfig?.rejectedPolicy ?: "CallerRuns")
+
             routeClasses.each { routeClass ->
                 camel.routeBuilder(ref: "${routeClass.fullName}")
             }
