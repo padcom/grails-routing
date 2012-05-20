@@ -18,14 +18,14 @@ grails.project.dependency.resolution = {
 	}
 
 	dependencies {
-		compile('org.apache.camel:camel-core:2.9.0')
-		compile('org.apache.camel:camel-spring:2.9.0') {
+		compile('org.apache.camel:camel-core:2.9.2')
+		compile('org.apache.camel:camel-spring:2.9.2') {
 			excludes 'spring-aop', 'spring-beans', 'spring-core', 'spring-expression', 'spring-asm', 'spring-tx', 'spring-context'
 		}
-		compile('org.apache.camel:camel-groovy:2.9.0') {
+		compile('org.apache.camel:camel-groovy:2.9.2') {
 			excludes 'spring-context', 'spring-aop', 'spring-tx', 'groovy-all'
 		}
-		compile('org.apache.camel:camel-stream:2.9.0')
+		compile('org.apache.camel:camel-stream:2.9.2')
 	}
 
 	plugins {
