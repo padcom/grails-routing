@@ -1,8 +1,10 @@
-target
-.settings
+*.zip
 .classpath
 .project
-plugin.xml
-*.zip
+.settings
+/.emacs.desktop
+/.emacs.desktop.lock
 classes
+plugin.xml
+target
 web-app
