@@ -1,6 +1,7 @@
 grails.project.work.dir = "target"
 
 def camelVersion = '2.9.4'
+
 grails.project.dependency.resolution = {
 	inherits("global") {
 		excludes 'tomcat'
