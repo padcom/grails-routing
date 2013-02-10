@@ -23,6 +23,7 @@ class RoutingGrailsPlugin {
 	def doWithSpring = {
 		def config = application.config.grails.routing
 		def camelContextId = config?.camelContextId ?: 'camelContext'
+        def useMDCLogging = config?.useMDCLogging ?: false
 		def routeClasses = application.routeClasses
 
 		initializeRouteBuilderHelpers()
@@ -44,7 +45,7 @@ class RoutingGrailsPlugin {
 
 		xmlns camel:'http://camel.apache.org/schema/spring'
 
-		camel.camelContext(id: camelContextId) {
+		camel.camelContext(id: camelContextId, useMDCLogging: useMDCLogging) {
 			def threadPoolProfileConfig = config?.defaultThreadPoolProfile
 
 			camel.threadPoolProfile(
