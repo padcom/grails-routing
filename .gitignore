@@ -1,4 +1,5 @@
 *.zip
+*.iml
 .classpath
 .project
 .settings
@@ -8,5 +9,4 @@ classes
 plugin.xml
 target
 web-app
-*.iml
 .idea
