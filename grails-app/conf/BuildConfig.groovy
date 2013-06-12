@@ -1,6 +1,6 @@
 grails.project.work.dir = "target"
 
-def camelVersion = '2.9.4'
+def camelVersion = '2.11.0'
 
 grails.project.dependency.resolution = {
 	inherits("global") {
@@ -31,6 +31,6 @@ grails.project.dependency.resolution = {
 	}
 
 	plugins {
-		build(":release:2.2.0") { export = false }
+		build(":release:2.2.1") { export = false }
 	}
 }

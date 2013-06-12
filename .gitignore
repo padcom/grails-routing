@@ -8,3 +8,5 @@ classes
 plugin.xml
 target
 web-app
+*.iml
+.idea
