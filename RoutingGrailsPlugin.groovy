@@ -9,7 +9,7 @@ import org.grails.plugins.routing.RouteArtefactHandler
 import org.grails.plugins.routing.processor.ClosureProcessor
 
 class RoutingGrailsPlugin {
-	def version          = '1.2.3'
+	def version          = '1.2.4-SNAPSHOT'
 	def grailsVersion    = '2.0.0 > *'
 	def dependsOn        = [:]
 	def loadAfter        = [ 'controllers', 'services' ]
@@ -24,6 +24,8 @@ class RoutingGrailsPlugin {
 		def config = application.config.grails.routing
 		def camelContextId = config?.camelContextId ?: 'camelContext'
         def useMDCLogging = config?.useMDCLogging ?: false
+        def useSpringSecurity =  config?.useSpringSecurity ?: false
+        def authorizationPolicies = config?.authorizationPolicies ?: []
 		def routeClasses = application.routeClasses
 
 		initializeRouteBuilderHelpers()
@@ -42,12 +44,21 @@ class RoutingGrailsPlugin {
 				bean.autowire = "byName"
 			}
 		}
+        if(useSpringSecurity) {
+            xmlns camelSecure:'http://camel.apache.org/schema/spring-security'
+            authorizationPolicies?.each {
+                camelSecure.authorizationPolicy(id : it.id, access: it.access,
+                        accessDecisionManager : it.accessDecisionManager ?: "accessDecisionManager",
+                        authenticationManager: it.authenticationManager ?: "authenticationManager",
+                        useThreadSecurityContext : it.useThreadSecurityContext ?: true,
+                        alwaysReauthenticate : it.alwaysReauthenticate ?: false)
+            }
+        }
 
-		xmlns camel:'http://camel.apache.org/schema/spring'
+        xmlns camel:'http://camel.apache.org/schema/spring'
 
 		camel.camelContext(id: camelContextId, useMDCLogging: useMDCLogging) {
 			def threadPoolProfileConfig = config?.defaultThreadPoolProfile
-
 			camel.threadPoolProfile(
 				id: "defaultThreadPoolProfile",
 				defaultProfile: "true",
