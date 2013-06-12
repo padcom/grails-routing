@@ -101,8 +101,8 @@ class RoutingGrailsPlugin {
 	// ------------------------------------------------------------------------
 
 	private initializeRouteBuilderHelpers() {
-        //https://camel.apache.org/groovy-dsl.html
-        // only filter predicate.
+        //
+        // only filter predicate. but looks like it's been handled. https://camel.apache.org/groovy-dsl.html
 		ProcessorDefinition.metaClass.filter = { filter ->
 			if (filter instanceof Closure) {
 				filter = new PredicateProcessor(filter)
