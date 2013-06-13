@@ -6,16 +6,14 @@
 ### Configuration for Spring Security:
 
 * You've Spring Security plugin installed.
-* Config.groovy
+* Config.groovy. e.g.
+
 <code>grails.routing {
-      	// you have spring-security-core installed. don't forget to add
-      	// compile("org.apache.camel:camel-spring-security:2.11.0")
       	useSpringSecurity= true
       	authorizationPolicies = [
       		[id : 'user', access : 'ROLE_USER'],
       		[id : 'admin', access : 'ROLE_ADMIN']
       	]
-
       	// other config. default value
       	camelContextId = "camelContext"
       	useMDCLogging = false
@@ -27,4 +25,10 @@
       	}
       }
 </code>
+
+### Reading list
+
+* https://camel.apache.org/groovy-dsl.html
+* http://camel.apache.org/spring-security.html
+* http://camel.apache.org/spring-security-example.html
 

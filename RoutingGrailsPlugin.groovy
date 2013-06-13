@@ -9,7 +9,8 @@ class RoutingGrailsPlugin {
 	def version          = '1.2.4-SNAPSHOT'
 	def grailsVersion    = '2.0.0 > *'
 	def dependsOn        = [:]
-	def loadAfter        = [ 'controllers', 'services' ]
+//	def loadAfter        = [ 'controllers', 'services', 'spring-security-core' ]
+    def loadAfter        = [ 'controllers', 'services' ]
 	def artefacts        = [ new RouteArtefactHandler() ]
 	def author           = 'Matthias Hryniszak, Chris Navta'
 	def authorEmail      = 'padcom@gmail.com, chris@ix-n.com'
@@ -23,6 +24,7 @@ class RoutingGrailsPlugin {
         def useMDCLogging = config?.useMDCLogging ?: false
         def useSpringSecurity =  config?.useSpringSecurity ?: false
         def authorizationPolicies = config?.authorizationPolicies ?: []
+        println ">>> useSpringSecurity ${useSpringSecurity} authorizationPolicies ${authorizationPolicies}"
 		def routeClasses = application.routeClasses
 
 		initializeRouteBuilderHelpers()
@@ -41,14 +43,19 @@ class RoutingGrailsPlugin {
 				bean.autowire = "byName"
 			}
 		}
+
         if(useSpringSecurity) {
+
             xmlns camelSecure:'http://camel.apache.org/schema/spring-security'
             authorizationPolicies?.each {
+                println "${it.id} : ${it.access}"
                 camelSecure.authorizationPolicy(id : it.id, access: it.access,
                         accessDecisionManager : it.accessDecisionManager ?: "accessDecisionManager",
-                        authenticationManager: it.authenticationManager ?: "authenticationManager",
-                        useThreadSecurityContext : it.useThreadSecurityContext ?: true,
-                        alwaysReauthenticate : it.alwaysReauthenticate ?: false)
+                        authenticationManager: it.authenticationManager ?: "authenticationManager"
+//                        ,
+//                        useThreadSecurityContext : it.useThreadSecurityContext ?: true,
+//                        alwaysReauthenticate : it.alwaysReauthenticate ?: false
+                )
             }
         }
 
