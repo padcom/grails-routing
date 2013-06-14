@@ -1,9 +1,12 @@
+import org.apache.camel.Exchange
 import org.apache.camel.model.*
 import org.grails.plugins.routing.processor.PredicateProcessor
 import org.springframework.beans.factory.config.MethodInvokingFactoryBean
 
 import org.grails.plugins.routing.RouteArtefactHandler
 import org.grails.plugins.routing.processor.ClosureProcessor
+
+import javax.security.auth.Subject
 
 class RoutingGrailsPlugin {
 	def version          = '1.2.4-SNAPSHOT'
@@ -24,7 +27,6 @@ class RoutingGrailsPlugin {
         def useMDCLogging = config?.useMDCLogging ?: false
         def useSpringSecurity =  config?.useSpringSecurity ?: false
         def authorizationPolicies = config?.authorizationPolicies ?: []
-        println ">>> useSpringSecurity ${useSpringSecurity} authorizationPolicies ${authorizationPolicies}"
 		def routeClasses = application.routeClasses
 
 		initializeRouteBuilderHelpers()
@@ -48,14 +50,11 @@ class RoutingGrailsPlugin {
 
             xmlns camelSecure:'http://camel.apache.org/schema/spring-security'
             authorizationPolicies?.each {
-                println "${it.id} : ${it.access}"
                 camelSecure.authorizationPolicy(id : it.id, access: it.access,
                         accessDecisionManager : it.accessDecisionManager ?: "accessDecisionManager",
-                        authenticationManager: it.authenticationManager ?: "authenticationManager"
-//                        ,
-//                        useThreadSecurityContext : it.useThreadSecurityContext ?: true,
-//                        alwaysReauthenticate : it.alwaysReauthenticate ?: false
-                )
+                        authenticationManager: it.authenticationManager ?: "authenticationManager",
+                        useThreadSecurityContext : it.useThreadSecurityContext ?: true,
+                        alwaysReauthenticate : it.alwaysReauthenticate ?: false)
             }
         }
 
@@ -132,8 +131,18 @@ class RoutingGrailsPlugin {
 
 	private addDynamicMethods(artifacts, template) {
 		artifacts?.each { artifact ->
-			artifact.metaClass.sendMessage = { endpoint,message ->
-				template.sendBody(endpoint,message)
+            artifact.metaClass.sendMessageWithAuth = { endpoint, message, auth ->
+                def headers = [:];
+                headers.put(Exchange.AUTHENTICATION, new Subject(true, [auth] as Set, [] as Set, [] as Set))
+                template.sendBodyAndHeaders(endpoint,message, headers)
+            }
+            artifact.metaClass.requestMessageWithAuth = { endpoint, message, auth ->
+                def headers = [:];
+                headers.put(Exchange.AUTHENTICATION, new Subject(true, [auth] as Set, [] as Set, [] as Set))
+                template.requestBodyAndHeaders(endpoint,message, headers)
+            }
+			artifact.metaClass.sendMessage = { endpoint, message ->
+                template.sendBody(endpoint,message)
 			}
 			artifact.metaClass.sendMessageAndHeaders = { endpoint, message, headers ->
 				template.sendBodyAndHeaders(endpoint,message,headers)

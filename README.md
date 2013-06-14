@@ -8,22 +8,29 @@
 * You've Spring Security plugin installed.
 * Config.groovy. e.g.
 
-<code>grails.routing {
+<code>
+grails.routing {
       	useSpringSecurity= true
       	authorizationPolicies = [
-      		[id : 'user', access : 'ROLE_USER'],
-      		[id : 'admin', access : 'ROLE_ADMIN']
+      		[id : 'camelUser', access : 'ROLE_USER'],
+      		[id : 'camelAdmin', access : 'ROLE_ADMIN']
       	]
-      	// other config. default value
-      	camelContextId = "camelContext"
-      	useMDCLogging = false
-      	defaultThreadPoolProfile {
-      		poolSize = "10"
-      		maxPoolSize = "20"
-      		maxQueueSize = "1000"
-      		rejectedPolicy = "CallerRuns"
-      	}
       }
+</code>
+
+Note that if I use id with name 'user', there's problem with my Grails app. So, I recommend to use unique id, perhaps adding some prefix.
+Access is role name. if multiple roles, separate it by comma. I haven't tried it though.
+
+* create-route route.name.here
+* Add route configuration. The following is example, where it calls services.
+<code>
+        from('seda:admin').policy('camelAdmin').to('bean:loggingService?method=logUser')
+        from('seda:user').policy('camelUser').to('bean:loggingService?method=logUser')
+        from('seda:anyuser').to('bean:loggingService?method=logAnonym')
+</code>
+* To send message you can do something like
+<code>
+sendMessageWithAuth("seda:${springSecurityService.authentication.name}", msg, SecurityContextHolder.context.authentication )
 </code>
 
 ### Reading list
