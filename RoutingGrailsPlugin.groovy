@@ -2,7 +2,7 @@ import grails.util.*
 
 import org.apache.camel.spring.*
 import org.apache.camel.model.*
-import org.apache.camel.language.groovy.CamelGroovyMethods
+import org.apache.camel.groovy.extend.CamelGroovyMethods
 import org.springframework.beans.factory.config.MethodInvokingFactoryBean
 
 import org.grails.plugins.routing.RouteArtefactHandler
@@ -95,22 +95,22 @@ class RoutingGrailsPlugin {
 	private initializeRouteBuilderHelpers() {
 		ProcessorDefinition.metaClass.filter = { filter ->
 			if (filter instanceof Closure) {
-				filter = CamelGroovyMethods.toExpression(filter)
-			}
+                          filter = CamelGroovyMethods.filter(delegate, filter)
+			} else 
 			delegate.filter(filter);
 		}
 
 		ChoiceDefinition.metaClass.when = { filter ->
 			if (filter instanceof Closure) {
-				filter = CamelGroovyMethods.toExpression(filter)
-			}
+                          filter = CamelGroovyMethods.when(delegate, filter)
+			} else
 			delegate.when(filter);
 		}
 
 		ProcessorDefinition.metaClass.process = { filter ->
 			if (filter instanceof Closure) {
-				filter = new ClosureProcessor(filter)
-			}
+                          filter = CamelGroovyMethods.process(delegate, filter)
+			} else 
 			delegate.process(filter);
 		}
 	}
