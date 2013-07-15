@@ -1,4 +1,8 @@
+.gitignore
 *.zip
+*.sha1
+*.iml
+/.idea
 .classpath
 .project
 .settings
