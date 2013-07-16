@@ -95,21 +95,21 @@ class RoutingGrailsPlugin {
 	private initializeRouteBuilderHelpers() {
 		ProcessorDefinition.metaClass.filter = { filter ->
 			if (filter instanceof Closure) {
-                          filter = CamelGroovyMethods.filter(delegate, filter)
+                          CamelGroovyMethods.filter(delegate, filter)
 			} else 
 			delegate.filter(filter);
 		}
 
 		ChoiceDefinition.metaClass.when = { filter ->
 			if (filter instanceof Closure) {
-                          filter = CamelGroovyMethods.when(delegate, filter)
+                          CamelGroovyMethods.when(delegate, filter)
 			} else
 			delegate.when(filter);
 		}
 
 		ProcessorDefinition.metaClass.process = { filter ->
 			if (filter instanceof Closure) {
-                          filter = CamelGroovyMethods.process(delegate, filter)
+                          CamelGroovyMethods.process(delegate, filter)
 			} else 
 			delegate.process(filter);
 		}
