@@ -78,7 +78,7 @@ class RoutingGrailsPlugin {
                         
                 // otherwise we autostart camelContext here
                 if(application.config?.autoStartup ?: true)
-                  application.mainContext.('camelContext').start()
+                  application.mainContext('camelContext').start()
                   
 	}
 
