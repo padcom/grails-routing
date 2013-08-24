@@ -23,7 +23,7 @@ class RoutingGrailsPlugin {
 	def doWithSpring = {
 		def config = application.config.grails.routing
 		def camelContextId = config?.camelContextId ?: 'camelContext'
-        def useMDCLogging = config?.useMDCLogging ?: false
+                def useMDCLogging = config?.useMDCLogging ?: false
 		def routeClasses = application.routeClasses
 
 		initializeRouteBuilderHelpers()
