@@ -1,6 +1,6 @@
 grails.project.work.dir = "target"
 
-def camelVersion = '2.11.0'
+def camelVersion = '2.11.1'
 
 grails.project.dependency.resolution = {
 	inherits("global") {
