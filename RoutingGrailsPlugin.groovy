@@ -9,11 +9,17 @@ class RoutingGrailsPlugin {
 	def grailsVersion    = '2.0.0 > *'
 	def loadAfter        = ['controllers', 'services']
 	def artefacts        = [new RouteArtefactHandler()]
-	def author           = 'Matthias Hryniszak, Chris Navta'
-	def authorEmail      = 'padcom@gmail.com, chris@ix-n.com'
 	def documentation    = 'http://grails.org/plugin/routing'
 	def title            = 'Apache Camel Plugin'
 	def description      = 'Provides message routing capabilities using Apache Camel'
+
+	def license = "APACHE"
+	def developers = [
+		[name: "Matthias Hryniszak", email: "padcom@gmail.com"],
+		[name: "Chris Navta", email: "chris@ix-n.com"]
+	]
+	def issueManagement = [system: "GITHUB", url: "https://github.com/padcom/grails-routing/issues"]
+	def scm = [url: "https://github.com/padcom/grails-routing"]
 
 	def doWithSpring = {
 		def config = application.config.grails.routing
