@@ -1,6 +1,6 @@
-includeTargets << grailsScript("Init")
+includeTargets << grailsScript("_GrailsInit")
 
-target(main: "Creates a new Camel Route.") {
+target(createRoute: "Creates a new Camel Route.") {
     typeName = "Route"
     artifactName = "Route"
     artifactPath = "grails-app/routes"
@@ -8,4 +8,4 @@ target(main: "Creates a new Camel Route.") {
     createArtifact()
 }
 
-setDefaultTarget(main)
+setDefaultTarget(createRoute)

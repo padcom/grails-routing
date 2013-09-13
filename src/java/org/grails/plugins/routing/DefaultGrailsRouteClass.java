@@ -1,7 +1,6 @@
 package org.grails.plugins.routing;
 
 import org.codehaus.groovy.grails.commons.AbstractInjectableGrailsClass;
-import groovy.lang.Closure;
 
 @SuppressWarnings("rawtypes")
 public class DefaultGrailsRouteClass extends AbstractInjectableGrailsClass implements GrailsRouteClass, GrailsRouteClassProperty {
