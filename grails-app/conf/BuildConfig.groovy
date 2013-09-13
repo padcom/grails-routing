@@ -1,20 +1,14 @@
-grails.project.work.dir = "target"
+grails.project.work.dir = 'target'
 
 def camelVersion = '2.11.1'
 
 grails.project.dependency.resolution = {
-	inherits("global") {
-		excludes 'tomcat'
-		excludes 'hibernate'
-	}
 
-	log "warn"
+	inherits 'global'
+	log 'warn'
 
 	repositories {
-		grailsPlugins()
-		grailsHome()
 		grailsCentral()
-
 		mavenLocal()
 		mavenCentral()
 	}
@@ -31,8 +25,8 @@ grails.project.dependency.resolution = {
 	}
 
 	plugins {
-                build ':release:2.2.1', ':rest-client-builder:1.0.3', {
-                  export = false
-                }
+		build ':release:2.2.1', ':rest-client-builder:1.0.3', {
+			export = false
+		}
 	}
 }
