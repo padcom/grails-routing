@@ -9,7 +9,7 @@ import org.grails.plugins.routing.RouteArtefactHandler
 import org.grails.plugins.routing.processor.ClosureProcessor
 
 class RoutingGrailsPlugin {
-	def version          = '1.2.4'
+	def version          = '1.2.5'
 	def grailsVersion    = '2.0.0 > *'
 	def dependsOn        = [:]
 	def loadAfter        = [ 'controllers', 'services' ]
@@ -23,7 +23,7 @@ class RoutingGrailsPlugin {
 	def doWithSpring = {
 		def config = application.config.grails.routing
 		def camelContextId = config?.camelContextId ?: 'camelContext'
-        def useMDCLogging = config?.useMDCLogging ?: false
+                def useMDCLogging = config?.useMDCLogging ?: false
 		def routeClasses = application.routeClasses
 
 		initializeRouteBuilderHelpers()
@@ -45,7 +45,11 @@ class RoutingGrailsPlugin {
 
 		xmlns camel:'http://camel.apache.org/schema/spring'
 
-		camel.camelContext(id: camelContextId, useMDCLogging: useMDCLogging) {
+                // we don't allow camel autostart regardless to autoStartup value
+                // this may cause problems if autostarted camel start invoking routes which calls service/controller
+                // methods, which use dynamically injected methods
+                // because doWithDynamicMethods is called after doWithSpring
+		camel.camelContext(id: camelContextId, useMDCLogging: useMDCLogging, autoStartup: false) {
 			def threadPoolProfileConfig = config?.defaultThreadPoolProfile
 
 			camel.threadPoolProfile(
@@ -71,6 +75,11 @@ class RoutingGrailsPlugin {
 
 		if (isQuartzPluginInstalled(application))
 			addDynamicMethods(application.taskClasses, template);
+                        
+                // otherwise we autostart camelContext here
+                if(application.config?.autoStartup ?: true)
+                  application.mainContext('camelContext').start()
+                  
 	}
 
 	def watchedResources = [
