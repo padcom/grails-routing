@@ -5,7 +5,7 @@ import org.grails.plugins.routing.RouteArtefactHandler
 import org.springframework.beans.factory.config.MethodInvokingFactoryBean
 
 class RoutingGrailsPlugin {
-	def version          = '1.2.5'
+	def version          = '1.2.5.2'
 	def grailsVersion    = '2.0.0 > *'
 	def loadAfter        = ['controllers', 'services']
 	def artefacts        = [new RouteArtefactHandler()]
@@ -80,7 +80,7 @@ class RoutingGrailsPlugin {
 
 		// otherwise we autostart camelContext here
 		if (application.config?.autoStartup ?: true) {
-			application.mainContext('camelContext').start()
+			application.mainContext.getBean('camelContext').start()
 		}
 	}
 
