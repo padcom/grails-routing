@@ -5,7 +5,7 @@ import org.grails.plugins.routing.RouteArtefactHandler
 import org.springframework.beans.factory.config.MethodInvokingFactoryBean
 
 class RoutingGrailsPlugin {
-	def version          = '1.2.5.2'
+	def version          = '1.2.6'
 	def grailsVersion    = '2.0.0 > *'
 	def loadAfter        = ['controllers', 'services']
 	def artefacts        = [new RouteArtefactHandler()]
@@ -16,7 +16,8 @@ class RoutingGrailsPlugin {
 	def license = "APACHE"
 	def developers = [
 		[name: "Matthias Hryniszak", email: "padcom@gmail.com"],
-		[name: "Chris Navta", email: "chris@ix-n.com"]
+		[name: "Chris Navta", email: "chris@ix-n.com"],
+		[name: "Arsen A. Gutsal", email: "gutsal.arsen@gmail.com"]
 	]
 	def issueManagement = [system: "GITHUB", url: "https://github.com/padcom/grails-routing/issues"]
 	def scm = [url: "https://github.com/padcom/grails-routing"]
@@ -80,7 +81,8 @@ class RoutingGrailsPlugin {
 
 		// otherwise we autostart camelContext here
 		if (application.config?.autoStartup ?: true) {
-			application.mainContext.getBean('camelContext').start()
+                        def camelContextId = application.config?.camelContextId ?: 'camelContext'
+			application.mainContext.getBean(camelContextId).start()
 		}
 	}
 
