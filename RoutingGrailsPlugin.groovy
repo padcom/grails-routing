@@ -5,7 +5,7 @@ import org.grails.plugins.routing.RouteArtefactHandler
 import org.springframework.beans.factory.config.MethodInvokingFactoryBean
 
 class RoutingGrailsPlugin {
-	def version          = '1.2.6'
+	def version          = '1.2.7'
 	def grailsVersion    = '2.0.0 > *'
 	def loadAfter        = ['controllers', 'services']
 	def artefacts        = [new RouteArtefactHandler()]
