@@ -5,7 +5,7 @@ import org.grails.plugins.routing.RouteArtefactHandler
 import org.springframework.beans.factory.config.MethodInvokingFactoryBean
 
 class RoutingGrailsPlugin {
-	def version          = '1.2.7'
+	def version          = '1.2.8'
 	def grailsVersion    = '2.0.0 > *'
 	def loadAfter        = ['controllers', 'services']
 	def artefacts        = [new RouteArtefactHandler()]
@@ -26,6 +26,8 @@ class RoutingGrailsPlugin {
 		def config = application.config.grails.routing
 		def camelContextId = config?.camelContextId ?: 'camelContext'
 		def useMDCLogging = config?.useMDCLogging ?: false
+		def streamCache = config?.streamCache ?: false
+		def trace = config?.trace ?: false
 		def routeClasses = application.routeClasses
 
 		initializeRouteBuilderHelpers()
@@ -51,7 +53,11 @@ class RoutingGrailsPlugin {
 		// this may cause problems if autostarted camel start invoking routes which calls service/controller
 		// methods, which use dynamically injected methods
 		// because doWithDynamicMethods is called after doWithSpring
-		camel.camelContext(id: camelContextId, useMDCLogging: useMDCLogging, autoStartup: false) {
+		camel.camelContext(id: camelContextId, 
+                                   useMDCLogging: useMDCLogging, 
+                                   autoStartup: false, 
+                                   streamCache: streamCache,
+                                   trace: trace) {
 			def threadPoolProfileConfig = config?.defaultThreadPoolProfile
 
 			camel.threadPoolProfile(
@@ -80,7 +86,7 @@ class RoutingGrailsPlugin {
 		}
 
 		// otherwise we autostart camelContext here
-		if (application.config?.autoStartup ?: true) {
+		if (application.config?.grails.routing.autoStartup ?: true) {
                         def camelContextId = application.config?.camelContextId ?: 'camelContext'
 			application.mainContext.getBean(camelContextId).start()
 		}
