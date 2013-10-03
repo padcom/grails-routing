@@ -162,6 +162,35 @@ Including further components is as easy as adding a reference to the BuildConfig
 `runtime("org.apache.camel:camel-ftp:2.12.1")`
 This will include full support for `ftp://` endpoints in your application's routing facilities. For a complete list of available components see the Apache Camel documentation
 
+Unit Testing
+============
+You can extend `CamelTestSupport` class to perform testing of your routes. 
+#####Important notice: 
+By default `CamelTestSupport#createCamelContext` method creates new `DefaultCamelContext`. To prevent it and make it possible to `bind` existing camelContext created by plugin to CamelTestSupport you should override createCamelContext method like this:
+
+```java
+class TestRouteTests extends CamelTestSupport {
+
+  def CamelContext camelContext
+  def ProducerTemplate producerTemplate
+
+  protected CamelContext createCamelContext() throws Exception {
+    return camelContext;
+  }
+
+  @Test
+  void testSomething() {
+    def mockEndpoint
+    mockEndpoint = getMockEndpoint('mock:bar')
+
+    mockEndpoint.expectedMessageCount(1)
+    producerTemplate.sendBody('direct:foo', "Hello World")
+
+    assertMockEndpointsSatisfied()
+  }
+}
+```
+
 
 Integration with Quartz plugin
 ===============================
@@ -177,6 +206,6 @@ Here is another simplistic example to demonstrate the integration with Quartz pl
 
 Credits
 =======
-Chris Navta - The original grails-camel plugin as well as the original version of this documentation
-Matthias Hryniszak - Quartz integration and adoption to Camel 2.9.0 and examples
-Arsen A. Gutsal - Latest upgrade to `Camel 2.12.1`
+- Chris Navta - The original grails-camel plugin as well as the original version of this documentation
+- Matthias Hryniszak - Quartz integration and adoption to Camel 2.9.0 and examples
+- Arsen A. Gutsal - Latest upgrade to `Camel 2.12.1`
