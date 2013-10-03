@@ -132,9 +132,9 @@ In order to be able to run multiple applications utilizing this plugin in one JV
 #####Configuring additional parameters (available as of 1.2.8)
 
 ```java
-        grails.routing.useMDCLogging = true
-        grails.routing.streamCache = true
-        grails.routing.trace = true
+grails.routing.useMDCLogging = true
+grails.routing.streamCache = true
+grails.routing.trace = true
 ```
 
 #####Configuring thread pool (available as of 1.2.2)
