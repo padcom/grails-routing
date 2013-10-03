@@ -171,8 +171,8 @@ By default `CamelTestSupport#createCamelContext` method creates new `DefaultCame
 ```java
 class TestRouteTests extends CamelTestSupport {
 
-  def CamelContext camelContext
-  def ProducerTemplate producerTemplate
+  CamelContext camelContext
+  ProducerTemplate producerTemplate
 
   protected CamelContext createCamelContext() throws Exception {
     return camelContext;
