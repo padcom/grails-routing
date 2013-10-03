@@ -127,7 +127,15 @@ Configuration
 ==============
 In order to be able to run multiple applications utilizing this plugin in one JVM you're going to need to change the ID of the camel context bean. You can do so in your Config.groovy like this:
 
-`grails.camel.camelContextId = 'hello'`
+`grails.routing.camelContextId = 'hello'`
+
+Configuring additional parameters (available as of 1.2.8)
+
+```java
+        grails.routing.useMDCLogging = true
+        grails.routing.streamCache = true
+        grails.routing.trace = true
+```
 
 Configuring thread pool (available as of 1.2.2)
 
