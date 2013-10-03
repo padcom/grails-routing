@@ -190,7 +190,7 @@ class TestRouteTests extends CamelTestSupport {
   }
 }
 ```
-
+More information and discussion in this [thread](http://stackoverflow.com/questions/19119238/camel-mock-endpoint-does-not-receive-any-message)
 
 Integration with Quartz plugin
 ===============================
