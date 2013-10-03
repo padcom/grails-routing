@@ -20,7 +20,7 @@ Since version 1.2.0 this plugin does not use ConfigurationHolder or any other st
 
 Overview
 ========
-The grails routing plug-in allows you to send and route messages to a wide variety of destination endpoints directly from your Controllers and Services. It also provides a new Grails artifact, Routes, to configure your routes using known Enterprise Integration Patterns via the Apache Camel Java DSL.
+The grails routing plug-in allows you to send and route messages to a wide variety of destination endpoints directly from your Controllers and Services. It also provides a new Grails artifact, Routes, to configure your routes using known Enterprise Integration Patterns via the `Apache Camel` `Java DSL`.
 
 This plugin is a new and updated version of the grails-camel plugin with virtually the same capabilities but it targets Apache Camel 2.9.0 instead.
 
@@ -29,10 +29,10 @@ Creating Routes
 ===============
 To create a new route, use the grails create-route command:
 
-```java
-grails create-route MyMessage
+`grails create-route MyMessage`
 This will create a route in your grails-app/routes directory:
 
+```java
 import org.apache.camel.builder.RouteBuilder
 class MyMessageRoute extends RouteBuilder {
 	def grailsApplication
@@ -47,7 +47,7 @@ class MyMessageRoute extends RouteBuilder {
 }
 ```
 
-In the configure closure you have full access to the Camel Java DSL to configure your message routes.
+In the configure closure you have full access to the `Camel Java DSL` to configure your message routes.
 
 
 Route Configuration
@@ -61,8 +61,7 @@ from("seda:input.queue").to("stream:out")
 
 This would print out any Object sent to "seda:input.queue" to the console.
 
-Slightly More Complex Example
-=============================
+#####Slightly More Complex Example
 Suppose you wanted to send messages asynchronously to the following Grails Service:
 
 ```java
@@ -83,7 +82,7 @@ from("seda:input.queue").filter {
 
 This would deliver any message with the text "FooBar" in the body to the myMethod method of the myService service.
 
-This example also illustrates one of the routing enhancements the plug-in offers. You can pass a Closure to the "filter", "when" and "process" DSL methods.
+This example also illustrates one of the routing enhancements the plug-in offers. You can pass a Closure to the "filter", "when" and "process" `DSL` methods.
 
 
 Receiving emails from GMail
@@ -97,7 +96,8 @@ Add the necessary runtime dependency to Camel Mail component in BuildConfig.groo
 `runtime 'org.apache.camel:camel-mail:2.12.1'`
 Follow the instructions on Apache Camel Mail component documentation page to setup the route
 
-#####Hot reloading
+Hot reloading
+=============
 If you want your service classes or beans to be hot reloadable DO NOT use
 
 `static transactional=true`
@@ -154,19 +154,18 @@ To use JMS messaging use the routing-jms plugin. It provides all the required ar
 
 Camel Components
 ================
-Apache Camel has a wide variety of built-in Components for message delivery, such as JMS, SMTP, Web Services and Jabber. Take a look at the Apache Camel documentation for a comprehensive list. By default the following components are included:
+Apache Camel has a wide variety of built-in Components for message delivery, such as JMS, SMTP, Web Services and Jabber. Take a look at the [Apache Camel documentation](http://camel.apache.org/components.html) for a comprehensive list. By default the following components are included:
 
-`camel-groovy`
-`camel-stream`
+`camel-groovy`, `camel-stream`
 
 Including further components is as easy as adding a reference to the BuildConfig.groovy file as follows:
-runtime("org.apache.camel:camel-ftp:2.12.1")
+`runtime("org.apache.camel:camel-ftp:2.12.1")`
 This will include full support for `ftp://` endpoints in your application's routing facilities. For a complete list of available components see the Apache Camel documentation
 
 
 Integration with Quartz plugin
 ===============================
-Services and controllers are not the only artifacts capable of sending messages to through the Camel router. Once you install the grails-quartz plugin your jobs will be capable of sending messages just like your services and controllers do. This facility is unique to this plugin and is as of this moment not available in the original grails-camel plugin.
+Services and controllers are not the only artifacts capable of sending messages to through the Camel router. Once you install the `grails-quartz` plugin your jobs will be capable of sending messages just like your services and controllers do. This facility is unique to this plugin and is as of this moment not available in the original `grails-camel` plugin.
 
 
 Ready to use examples
@@ -180,4 +179,4 @@ Credits
 =======
 Chris Navta - The original grails-camel plugin as well as the original version of this documentation
 Matthias Hryniszak - Quartz integration and adoption to Camel 2.9.0 and examples
-Arsen A. Gutsal - Latest upgrade to Camel 2.12.1
+Arsen A. Gutsal - Latest upgrade to `Camel 2.12.1`
