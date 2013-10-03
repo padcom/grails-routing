@@ -3,6 +3,7 @@ package grails.routing
 import static org.junit.Assert.*
 import org.junit.*
 
+import org.apache.camel.CamelContext
 import org.apache.camel.test.junit4.CamelTestSupport
 import org.apache.camel.builder.RouteBuilder
 
@@ -10,6 +11,11 @@ class RoutesTests extends CamelTestSupport {
 
   def camelContext
   def producerTemplate
+
+  @Override
+  protected CamelContext createCamelContext() throws Exception {
+    return camelContext
+  }
 
   @Before
   void setUp() {
@@ -32,13 +38,12 @@ class RoutesTests extends CamelTestSupport {
   @Test
   void testSimpleRoute() {
     def mockEndpoint
-    mockEndpoint = camelContext.getEndpoint('mock:bar')
-    //mockEndpoint = getMockEndpoint('mock:bar')
+    mockEndpoint = getMockEndpoint('mock:bar')
     
     mockEndpoint.expectedMessageCount(1)
 
     producerTemplate.sendBody('direct:foo', 'Hello World')
     
-    mockEndpoint.assertIsSatisfied()
+    assertMockEndpointsSatisfied()
   }
 }
