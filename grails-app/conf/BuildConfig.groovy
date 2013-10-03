@@ -22,6 +22,8 @@ grails.project.dependency.resolution = {
 			excludes 'spring-context', 'spring-aop', 'spring-tx', 'groovy-all'
 		}
 		compile("org.apache.camel:camel-stream:${camelVersion}")
+
+		test("org.apache.camel:camel-test:${camelVersion}") { excludes "junit" }
 	}
 
 	plugins {
