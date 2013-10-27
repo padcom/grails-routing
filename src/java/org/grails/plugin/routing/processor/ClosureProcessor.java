@@ -1,4 +1,4 @@
-package org.grails.plugins.routing.processor;
+package org.grails.plugin.routing.processor;
 
 import org.apache.camel.Processor;
 import org.apache.camel.Exchange;

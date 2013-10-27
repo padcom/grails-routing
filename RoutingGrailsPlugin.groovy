@@ -1,7 +1,7 @@
 import org.apache.camel.groovy.extend.CamelGroovyMethods
 import org.apache.camel.model.ChoiceDefinition
 import org.apache.camel.model.ProcessorDefinition
-import org.grails.plugins.routing.RouteArtefactHandler
+import org.grails.plugin.routing.RouteArtefactHandler
 import org.springframework.beans.factory.config.MethodInvokingFactoryBean
 
 class RoutingGrailsPlugin {
@@ -86,7 +86,7 @@ class RoutingGrailsPlugin {
 		}
 
 		// otherwise we autostart camelContext here
-		if (application.config?.grails.routing.autoStartup ?: true) {
+		if (application.config?.grails?.routing?.autoStartup ?: true) {
                         def camelContextId = application.config?.camelContextId ?: 'camelContext'
 			application.mainContext.getBean(camelContextId).start()
 		}
