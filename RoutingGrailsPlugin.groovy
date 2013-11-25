@@ -89,7 +89,7 @@ class RoutingGrailsPlugin {
 		def config = application.config.grails.routing
 		
 		if (config.grails.routing.autoStartup ?: true) {
-                        def camelContextId = application.config?.camelContextId ?: 'camelContext'
+                        def camelContextId = config.camelContextId ?: 'camelContext'
 			application.mainContext.getBean(camelContextId).start()
 		}
 	}
