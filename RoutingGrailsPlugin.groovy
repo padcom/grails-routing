@@ -1,8 +1,13 @@
+import org.apache.camel.Exchange
+import org.apache.camel.Message
+import org.apache.camel.Processor
 import org.apache.camel.groovy.extend.CamelGroovyMethods
 import org.apache.camel.model.ChoiceDefinition
 import org.apache.camel.model.ProcessorDefinition
 import org.grails.plugins.routing.RouteArtefactHandler
 import org.springframework.beans.factory.config.MethodInvokingFactoryBean
+
+import javax.activation.DataHandler
 
 class RoutingGrailsPlugin {
 	def version          = '1.2.8'
@@ -146,6 +151,19 @@ class RoutingGrailsPlugin {
 			}
 			artifact.metaClass.sendMessageAndHeaders = { endpoint, message, headers ->
 				template.sendBodyAndHeaders(endpoint,message,headers)
+			}
+			artifact.metaClass.sendMessageAndHeadersAndAttachments = { endpoint, message, headers, Map<String, DataHandler> attachments ->
+				template.send( endpoint, new Processor() {
+					@Override
+					void process(Exchange exchange) throws Exception {
+						Message msg = exchange.in;
+						msg.setBody(message)
+						msg.setHeaders(headers)
+						attachments.each {
+							msg.addAttachment(it.key, it.value)
+						}
+					}
+				})
 			}
 			artifact.metaClass.requestMessage = { endpoint,message ->
 				template.requestBody(endpoint,message)
