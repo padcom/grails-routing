@@ -153,17 +153,14 @@ class RoutingGrailsPlugin {
 				template.sendBodyAndHeaders(endpoint,message,headers)
 			}
 			artifact.metaClass.sendMessageAndHeadersAndAttachments = { endpoint, message, headers, Map<String, DataHandler> attachments ->
-				template.send( endpoint, new Processor() {
-					@Override
-					void process(Exchange exchange) throws Exception {
-						Message msg = exchange.in;
-						msg.setBody(message)
-						msg.setHeaders(headers)
-						attachments.each {
-							msg.addAttachment(it.key, it.value)
-						}
+				template.send( endpoint, { Exchange exchange ->
+					Message msg = exchange.in;
+					msg.setBody(message)
+					msg.setHeaders(headers)
+					attachments.each {
+						msg.addAttachment(it.key, it.value)
 					}
-				})
+				} as Processor)
 			}
 			artifact.metaClass.requestMessage = { endpoint,message ->
 				template.requestBody(endpoint,message)
