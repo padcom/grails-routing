@@ -123,6 +123,18 @@ def myMessage = "The content of my message"
 sendMessageAndHeaders("seda:input.queue", myMessage, [ header1: "value", header2: 2 ])
 ```
 
+To send messages with attachments (e.g. e-mails with attachments), you can use the following method:
+
+```java
+def myMessage = "The content of my message"
+sendMessageAndHeadersAndAttachments("seda:input.queue", myMessage, [ header1: "value", header2: 2 ],
+	[
+             "test.png": new DataHandler( new FileDataSource("test.png") )
+	]
+)
+```
+
+
 Configuration
 ==============
 In order to be able to run multiple applications utilizing this plugin in one JVM you're going to need to change the ID of the camel context bean. You can do so in your Config.groovy like this:
