@@ -107,7 +107,9 @@ in your service class. This is a known limitation as of now and will not work.
 
 Sending Messages
 ================
-The plug-in provides a new method, "sendMessage", to all Controllers and Services for sending messages to endpoints. It accepts a String endpoint and an Object message:
+The plug-in provides a new service, CamelMessageService, with the following methods:
+
+"sendMessage", for sending messages to endpoints. It accepts a String endpoint and an Object message:
 
 ```java
 def myMessage = [name:"foo",data:"bar"]
