@@ -6,6 +6,8 @@ import org.apache.camel.Message
 import org.apache.camel.Processor
 
 class CamelMessageService {
+    static transactional = false
+
     def producerTemplate
 
     def sendMessage(endpoint,message) {
