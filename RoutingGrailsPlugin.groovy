@@ -119,41 +119,4 @@ class RoutingGrailsPlugin {
 			}
 		}
 	}
-
-	private addDynamicMethods(artifacts, template) {
-		artifacts?.each { artifact ->
-			artifact.metaClass.sendMessage = { endpoint,message ->
-				template.sendBody(endpoint,message)
-			}
-			artifact.metaClass.sendMessageAndHeaders = { endpoint, message, headers ->
-				template.sendBodyAndHeaders(endpoint,message,headers)
-			}
-			artifact.metaClass.sendMessageAndHeadersAndAttachments = { endpoint, message, headers, Map<String, DataHandler> attachments ->
-				template.send( endpoint, { Exchange exchange ->
-					Message msg = exchange.in;
-					msg.setBody(message)
-					msg.setHeaders(headers)
-					attachments.each {
-						msg.addAttachment(it.key, it.value)
-					}
-				} as Processor)
-			}
-			artifact.metaClass.requestMessage = { endpoint,message ->
-				template.requestBody(endpoint,message)
-			}
-			artifact.metaClass.requestMessageAndHeaders = { endpoint, message, headers ->
-				template.requestBodyAndHeaders(endpoint, message, headers)
-			}
-		}
-	}
-
-	private isQuartzPluginInstalled(application) {
-		// this is a nasty implementation... maybe there's something better?
-		try {
-			def tasks = application.taskClasses
-			return true
-		} catch (e) {
-			return false
-		}
-	}
 }
