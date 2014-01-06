@@ -81,18 +81,19 @@ class RoutingGrailsPlugin {
 	}
 
 	def doWithDynamicMethods = { ctx ->
-		def template = ctx.getBean('producerTemplate')
+		def config = application.config.grails.routing
+		if (!config?.disableDynamicMethods) {
+			def template = ctx.getBean('producerTemplate')
 
-		addDynamicMethods(application.controllerClasses, template)
-		addDynamicMethods(application.serviceClasses, template)
+			addDynamicMethods(application.controllerClasses, template)
+			addDynamicMethods(application.serviceClasses, template)
 
-		if (isQuartzPluginInstalled(application)) {
-			addDynamicMethods(application.taskClasses, template)
+			if (isQuartzPluginInstalled(application)) {
+				addDynamicMethods(application.taskClasses, template)
+			}
 		}
 
 		// otherwise we autostart camelContext here
-		def config = application.config.grails.routing
-		
 		if (config.grails.routing.autoStartup ?: true) {
                         def camelContextId = config.camelContextId ?: 'camelContext'
 			application.mainContext.getBean(camelContextId).start()
@@ -105,12 +106,15 @@ class RoutingGrailsPlugin {
 	]
 
 	def onChange = { event ->
-		def artifactName = "${event.source.name}"
+		def config = application.config.grails.routing
+		if (!config?.disableDynamicMethods) {
+			def artifactName = "${event.source.name}"
 
-		if (artifactName.endsWith('Controller') || artifactName.endsWith('Service')) {
-			def artifactType = (artifactName.endsWith('Controller')) ? 'controller' : 'service'
-			def grailsClass = application."${artifactType}Classes".find { it.fullName == artifactName }
-			addDynamicMethods([grailsClass], event.ctx.getBean('producerTemplate'))
+			if (artifactName.endsWith('Controller') || artifactName.endsWith('Service')) {
+				def artifactType = (artifactName.endsWith('Controller')) ? 'controller' : 'service'
+				def grailsClass = application."${artifactType}Classes".find { it.fullName == artifactName }
+				addDynamicMethods([grailsClass], event.ctx.getBean('producerTemplate'))
+			}
 		}
 	}
 
