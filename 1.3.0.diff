@@ -1,0 +1,74 @@
+diff --git a/RoutingGrailsPlugin.groovy b/RoutingGrailsPlugin.groovy
+index d3ce530..21ac747 100755
+--- a/RoutingGrailsPlugin.groovy
++++ b/RoutingGrailsPlugin.groovy
+@@ -10,7 +10,7 @@ import org.springframework.beans.factory.config.MethodInvokingFactoryBean
+ import javax.activation.DataHandler
+ 
+ class RoutingGrailsPlugin {
+-	def version          = '1.2.9'
++	def version          = '1.3.0'
+ 	def grailsVersion    = '2.0.0 > *'
+ 	def loadAfter        = ['controllers', 'services']
+ 	def artefacts        = [new RouteArtefactHandler()]
+diff --git a/application.properties b/application.properties
+index 39128d1..981a96f 100644
+--- a/application.properties
++++ b/application.properties
+@@ -1,4 +1,9 @@
+ #Grails Metadata file
+-#Fri Sep 13 21:29:40 EEST 2013
+-app.grails.version=2.2.4
++<<<<<<< HEAD
++#Fri Mar 07 19:04:42 EET 2014
++=======
++#Sat Feb 15 15:05:25 EET 2014
++>>>>>>> 6b3eb7fcbc0989a4f7f14b29f96942e020c37563
++app.grails.version=2.3.5
+ app.name=grails-routing
++app.servlet.version=2.5
+diff --git a/grails-app/conf/BuildConfig.groovy b/grails-app/conf/BuildConfig.groovy
+index 0378b2d..cfbc92e 100644
+--- a/grails-app/conf/BuildConfig.groovy
++++ b/grails-app/conf/BuildConfig.groovy
+@@ -1,6 +1,28 @@
+ grails.project.work.dir = 'target'
+ 
+-def camelVersion = '2.12.1'
++def camelVersion = '2.12.3'
++
++grails.project.fork = [
++
++        // configure settings for the test-app JVM, uses the daemon by default
++
++        test: [maxMemory: 768, minMemory: 64, debug: false, maxPerm: 256, daemon: true],
++
++// configure settings for the run-app JVM
++
++        run: [maxMemory: 768, minMemory: 64, debug: false, maxPerm: 256, forkReserve: false],
++
++// configure settings for the run-war JVM
++
++        war: [maxMemory: 768, minMemory: 64, debug: false, maxPerm: 256, forkReserve: false],
++
++// configure settings for the Console UI JVM
++
++        console: [maxMemory: 768, minMemory: 64, debug: false, maxPerm: 256]
++
++]
++
++grails.project.dependency.resolver = "maven" // or ivy
+ 
+ grails.project.dependency.resolution = {
+ 
+@@ -27,8 +49,8 @@ grails.project.dependency.resolution = {
+ 	}
+ 
+ 	plugins {
+-		build ':release:2.2.1', ':rest-client-builder:1.0.3', {
+-			export = false
++		build ':release:3.0.1', ':rest-client-builder:2.0.1', {
++                  //			export = false
+ 		}
+ 	}
+ }
