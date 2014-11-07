@@ -92,8 +92,8 @@ class RoutingGrailsPlugin {
 
 		// otherwise we autostart camelContext here
 		def config = application.config.grails.routing
-		
-		if (config.grails.routing.autoStartup ?: true) {
+
+		if (config.autoStartup != false) {
                         def camelContextId = config.camelContextId ?: 'camelContext'
 			application.mainContext.getBean(camelContextId).start()
 		}
