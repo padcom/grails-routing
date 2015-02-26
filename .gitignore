@@ -12,3 +12,4 @@ plugin.xml
 target
 web-app
 *.log
+.idea
