@@ -35,45 +35,45 @@ class RoutingGrailsPlugin {
 	def scm = [url: "https://github.com/padcom/grails-routing"]
 
 	def doWithSpring = {
-		def config = application.config.grails.routing
-		def camelContextId = config?.camelContextId ?: 'camelContext'
-        def useMDCLogging = config?.useMDCLogging ?: false
-	def streamCache = config?.streamCache ?: false
-	def trace = config?.trace ?: false
-        def useSpringSecurity =  config?.useSpringSecurity ?: false
-        def authorizationPolicies = config?.authorizationPolicies ?: []
-	def routeClasses = application.routeClasses
+	  def config = application.config.grails.routing
+	  def camelContextId = config?.camelContextId ?: 'camelContext'
+	  def useMDCLogging = config?.useMDCLogging ?: false
+	  def streamCache = config?.streamCache ?: false
+	  def trace = config?.trace ?: false
+	  def useSpringSecurity =  config?.useSpringSecurity ?: false
+	  def authorizationPolicies = config?.authorizationPolicies ?: []
+	  def routeClasses = application.routeClasses
 
-	initializeRouteBuilderHelpers()
+	  initializeRouteBuilderHelpers()
 
-	routeClasses.each { routeClass ->
-	  def fullName = routeClass.fullName
+	  routeClasses.each { routeClass ->
+	    def fullName = routeClass.fullName
 
-	  "${fullName}Class"(MethodInvokingFactoryBean) {
-	    targetObject = ref("grailsApplication", true)
-	    targetMethod = "getArtefact"
-	    arguments = [RouteArtefactHandler.ROUTE, fullName]
+	    "${fullName}Class"(MethodInvokingFactoryBean) {
+	      targetObject = ref("grailsApplication", true)
+	      targetMethod = "getArtefact"
+	      arguments = [RouteArtefactHandler.ROUTE, fullName]
+	    }
+
+	    "${fullName}"(ref("${fullName}Class")) { bean ->
+	      bean.factoryMethod = "newInstance"
+	      bean.autowire = "byName"
+	    }
 	  }
 
-	  "${fullName}"(ref("${fullName}Class")) { bean ->
-	    bean.factoryMethod = "newInstance"
-	    bean.autowire = "byName"
-	  }
-	}
-
-        if(useSpringSecurity) {
+	  if(useSpringSecurity) {
 
             xmlns camelSecure:'http://camel.apache.org/schema/spring-security'
             authorizationPolicies?.each {
-                camelSecure.authorizationPolicy(id : it.id, access: it.access,
-                        accessDecisionManager : it.accessDecisionManager ?: "accessDecisionManager",
-                        authenticationManager: it.authenticationManager ?: "authenticationManager",
-                        useThreadSecurityContext : it.useThreadSecurityContext ?: true,
-                        alwaysReauthenticate : it.alwaysReauthenticate ?: false)
+	      camelSecure.authorizationPolicy(id : it.id, access: it.access,
+					      accessDecisionManager : it.accessDecisionManager ?: "accessDecisionManager",
+					      authenticationManager: it.authenticationManager ?: "authenticationManager",
+					      useThreadSecurityContext : it.useThreadSecurityContext ?: true,
+					      alwaysReauthenticate : it.alwaysReauthenticate ?: false)
             }
-        }
+	  }
 
-        xmlns camel:'http://camel.apache.org/schema/spring'
+	  xmlns camel:'http://camel.apache.org/schema/spring'
 
 		// we don't allow camel autostart regardless to autoStartup value
 		// this may cause problems if autostarted camel start invoking routes which calls service/controller
