@@ -17,11 +17,8 @@ class RoutingGrailsPlugin {
 	def version          = '1.3.3'
 	def grailsVersion    = '2.0.0 > *'
 	def artefacts        = [new RouteArtefactHandler()]
-	def version          = '1.2.4-SNAPSHOT'
-	def grailsVersion    = '2.0.0 > *'
 	def dependsOn        = [:]
 	def loadAfter        = [ 'controllers', 'services' ]
-	def artefacts        = [ new RouteArtefactHandler() ]
 	def author           = 'Matthias Hryniszak, Chris Navta, Arief Hidaya'
 	def authorEmail      = 'padcom@gmail.com, chris@ix-n.com'
 	def documentation    = 'http://grails.org/plugin/routing'
@@ -41,6 +38,8 @@ class RoutingGrailsPlugin {
 		def config = application.config.grails.routing
 		def camelContextId = config?.camelContextId ?: 'camelContext'
         def useMDCLogging = config?.useMDCLogging ?: false
+	def streamCache = config?.streamCache ?: false
+	def trace = config?.trace ?: false
         def useSpringSecurity =  config?.useSpringSecurity ?: false
         def authorizationPolicies = config?.authorizationPolicies ?: []
 	def routeClasses = application.routeClasses
