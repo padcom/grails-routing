@@ -6,22 +6,16 @@ import org.junit.*
 import org.apache.camel.CamelContext
 import org.apache.camel.test.junit4.CamelTestSupport
 import org.apache.camel.builder.RouteBuilder
+import org.apache.camel.builder.AdviceWithRouteBuilder;
 
 class RoutesTests extends CamelTestSupport {
-
-  def camelContext
-  def producerTemplate
-
-  @Override
-  protected CamelContext createCamelContext() throws Exception {
-    return camelContext
-  }
+  //def producerTemplate
 
   @Before
   void setUp() {
     super.setUp()
 
-    camelContext.addRoutes(
+    context.addRoutes(
       new RouteBuilder(){
         @Override
         void configure(){
@@ -30,19 +24,11 @@ class RoutesTests extends CamelTestSupport {
       })
   }
 
-  @After
-  void tearDown() {
-    camelContext.stop()
-  }
-
   @Test
-  void testSimpleRoute() {
-    def mockEndpoint
-    mockEndpoint = getMockEndpoint('mock:bar')
-    
-    mockEndpoint.expectedMessageCount(1)
+  void testSimpleRoute() {    
+    getMockEndpoint('mock:bar').expectedMessageCount(1)
 
-    producerTemplate.sendBody('direct:foo', 'Hello World')
+    template.sendBody('direct:foo', 'Hello World')
     
     assertMockEndpointsSatisfied()
   }

@@ -1,6 +1,6 @@
 grails.project.work.dir = 'target'
 
-def camelVersion = '2.13.2'
+def camelVersion = '2.15.0'
 
 grails.project.fork = [
 
