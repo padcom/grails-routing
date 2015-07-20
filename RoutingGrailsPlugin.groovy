@@ -107,7 +107,7 @@ class RoutingGrailsPlugin {
 		addDynamicMethods(application.serviceClasses, template)
 
 		if (isQuartzPluginInstalled(application)) {
-			addDynamicMethods(application.taskClasses, template)
+			addDynamicMethods(application.jobClasses, template)
 		}
 
 		// otherwise we autostart camelContext here
@@ -198,12 +198,6 @@ class RoutingGrailsPlugin {
 	}
 
 	private isQuartzPluginInstalled(application) {
-		// this is a nasty implementation... maybe there's something better?
-		try {
-			def tasks = application.taskClasses
-			return true
-		} catch (e) {
-			return false
-		}
+        return application.getArtefactInfo('Job') != null
 	}
 }
