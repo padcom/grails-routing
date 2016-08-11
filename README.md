@@ -20,7 +20,7 @@ Since version 1.2.0 this plugin does not use ConfigurationHolder or any other st
 
 Overview
 ========
-The grails routing plug-in allows you to send and route messages to a wide variety of destination endpoints directly from your Controllers and Services. It also provides a new Grails artifact, Routes, to configure your routes using known Enterprise Integration Patterns via the `Apache Camel` `Java DSL`.
+The grails routing plug-in allows you to send and route messages to a wide variety of destination endpoints directly from a service "CamelMessageService". It also provides a new Grails artifact, Routes, to configure your routes using known Enterprise Integration Patterns via the `Apache Camel` `Java DSL`.
 
 This plugin is a new and updated version of the grails-camel plugin with virtually the same capabilities but it targets Apache Camel 2.9.0 instead.
 
@@ -107,7 +107,9 @@ in your service class. This is a known limitation as of now and will not work.
 
 Sending Messages
 ================
-The plug-in provides a new method, "sendMessage", to all Controllers and Services for sending messages to endpoints. It accepts a String endpoint and an Object message:
+The plug-in provides a new service, CamelMessageService, with the following methods:
+
+"sendMessage", for sending messages to endpoints. It accepts a String endpoint and an Object message:
 
 ```java
 def myMessage = [name:"foo",data:"bar"]
@@ -211,10 +213,6 @@ class TestRouteTests extends CamelTestSupport {
 }
 ```
 More information and discussion in this [thread](http://stackoverflow.com/questions/19119238/camel-mock-endpoint-does-not-receive-any-message)
-
-Integration with Quartz plugin
-===============================
-Services and controllers are not the only artifacts capable of sending messages to through the Camel router. Once you install the `grails-quartz` plugin your jobs will be capable of sending messages just like your services and controllers do. This facility is unique to this plugin and is as of this moment not available in the original `grails-camel` plugin.
 
 
 Ready to use examples
