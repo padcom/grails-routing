@@ -1,4 +1,4 @@
-package grails.routing
+package org.grails.plugins.routing
 
 import org.apache.camel.builder.RouteBuilder
 

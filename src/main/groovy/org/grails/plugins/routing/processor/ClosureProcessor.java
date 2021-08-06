@@ -1,8 +1,8 @@
 package org.grails.plugins.routing.processor;
 
-import org.apache.camel.Processor;
-import org.apache.camel.Exchange;
 import groovy.lang.Closure;
+import org.apache.camel.Exchange;
+import org.apache.camel.Processor;
 
 public class ClosureProcessor implements Processor {
     private final Closure target;
