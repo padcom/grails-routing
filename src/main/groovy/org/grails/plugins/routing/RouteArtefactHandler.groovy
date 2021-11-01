@@ -1,15 +1,15 @@
 package org.grails.plugins.routing
 
-import org.apache.camel.builder.RouteBuilder
 import grails.core.ArtefactHandlerAdapter
+import org.apache.camel.builder.RouteBuilder
 
 @SuppressWarnings("rawtypes")
-public class RouteArtefactHandler extends ArtefactHandlerAdapter implements GrailsRouteClassProperty {
-    public RouteArtefactHandler() {
-        super(RouteArtefactHandler.ROUTE, GrailsRouteClass.class, DefaultGrailsRouteClass.class, RouteArtefactHandler.ROUTE);
+class RouteArtefactHandler extends ArtefactHandlerAdapter implements GrailsRouteClassProperty {
+    RouteArtefactHandler() {
+        super(ROUTE, GrailsRouteClass.class, DefaultGrailsRouteClass.class, ROUTE)
     }
 
-    public boolean isArtefactClass(Class clazz) {
-        return clazz != null && RouteBuilder.class.isAssignableFrom(clazz);
+    boolean isArtefactClass(Class clazz) {
+        return clazz != null && RouteBuilder.class.isAssignableFrom(clazz)
     }
 }
